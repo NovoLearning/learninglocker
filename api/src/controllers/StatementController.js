@@ -17,6 +17,7 @@ const aggregate = (req) => {
   const maxScan = Number(req.query.maxScan) || MAX_SCAN;
   const pipeline = JSON.parse(req.query.pipeline);
   const sampleSize = Number(req.query.sampleSize) || -1;
+  const hint = JSON.parse(req.query.hint);
   const out = statementsService.aggregate({
     authInfo,
     limit,
@@ -25,7 +26,8 @@ const aggregate = (req) => {
     maxTimeMS,
     maxScan,
     pipeline,
-    sampleSize
+    sampleSize,
+    hint
   });
   return out;
 };

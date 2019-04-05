@@ -65,10 +65,10 @@ router.get(routes.VERSION, (req, res) => {
     new Promise(resolve => git.branch(resolve)),
     new Promise(resolve => git.tag(resolve))
   ])
-  .then(([short, long, branch, tag]) => {
-    jsonSuccess(res)({ short, long, branch, tag });
-  })
-  .catch(serverError(res));
+    .then(([short, long, branch, tag]) => {
+      jsonSuccess(res)({ short, long, branch, tag });
+    })
+    .catch(serverError(res));
 });
 router.get(routes.GOOGLE_AUTH, (req, res) => {
   const enabled = boolean(process.env.GOOGLE_ENABLED);
@@ -178,6 +178,11 @@ router.get(
  * STATEMENTS
  */
 router.get(
+  routes.STATEMENTS_AGGREGATE,
+  passport.authenticate(['jwt', 'clientBasic'], DEFAULT_PASSPORT_OPTIONS),
+  StatementController.aggregate
+);
+router.post(
   routes.STATEMENTS_AGGREGATE,
   passport.authenticate(['jwt', 'clientBasic'], DEFAULT_PASSPORT_OPTIONS),
   StatementController.aggregate
